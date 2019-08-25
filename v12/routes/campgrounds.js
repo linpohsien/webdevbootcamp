@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var Campground = require("../models/campground");
+var Comment = require("../models/comment");
 var middleware = require("../middleware");
 
 // INDEX - show all campgrounds
@@ -49,7 +50,7 @@ router.get("/:id", function(req, res){
 			req.flash("error", "Campground not found");
 			res.redirect("back");
 		} else {
-			console.log(foundCampground);
+			// console.log(foundCampground);
 			// render show template with that campground
 			res.render("campgrounds/show", {campground: foundCampground});
 		}
@@ -78,11 +79,13 @@ router.put("/:id", middleware.checkCampgroundOwnership, function(req, res){
 
 // DESTROY CAMPGROUND ROUTE
 router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
-	if(err){
-		res.redirect("/campgrounds");
-	} else {
-		res.redirect("/campgrounds");
-	}
+	Campground.findByIdAndRemove(req.params.id, function(err){
+		if(err){
+			res.redirect("/campgrounds");
+		} else {
+			res.redirect("/campgrounds");
+		}
+	});
 });
 
 module.exports = router;

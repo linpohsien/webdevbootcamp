@@ -22,6 +22,7 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(methodOvertide("_method"));
 app.use(flash());
+app.locals.moment = require('moment');
 // seedDB(); // seed the database
 
 // PASSPORT CONFIGURATION
